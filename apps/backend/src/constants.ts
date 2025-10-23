@@ -1,0 +1,10 @@
+export const {
+  BACKEND_DB_HOST = 'localhost',
+  DB_PORT = '5432',
+  DB_USER = 'backend',
+  DB_PASSWORD = 'backend',
+  DB_NAME = 'backend',
+  JWT_SECRET_KEY = 'test_key',
+  ALLOWED_CORS_ORIGINS_REGEX = '*',
+  NODE_ENV = 'development'
+} = process.env

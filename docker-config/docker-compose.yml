@@ -1,0 +1,15 @@
+
+services:
+    challenge-db:
+        container_name: challenge-db
+        build:
+            context: ./
+            dockerfile: db.Dockerfile
+        ports:
+        - '5432:5432'
+        environment:
+        - PAGER=less -S
+        - POSTGRES_DB=backend
+        - POSTGRES_USER=backend
+        - POSTGRES_PASSWORD=backend
+        #command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]

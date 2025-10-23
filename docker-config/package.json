@@ -1,0 +1,6 @@
+{
+  "name": "docker-config",
+  "scripts": {
+    "dev": "docker-compose up"
+  }
+}
