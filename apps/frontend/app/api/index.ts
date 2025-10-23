@@ -1,6 +1,7 @@
 import axios from 'axios'
+import { io } from 'socket.io-client'
 
-export const BACKEND_BASE_URL = process.env.VITE_BACKEND_BASE_URL ?? 'http://localhost:3001'
+export const BACKEND_BASE_URL = 'http://localhost:3001'
 
 export const axiosInstance = axios.create({
   baseURL: BACKEND_BASE_URL,
@@ -8,6 +9,8 @@ export const axiosInstance = axios.create({
     'Content-Type': 'application/json'
   }
 })
+
+export const socket = io(BACKEND_BASE_URL)
 
 export const getAuthRequestHeader = ({ token }: { token: string }) => {
   return {

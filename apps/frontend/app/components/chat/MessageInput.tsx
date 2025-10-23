@@ -5,11 +5,10 @@ import { useFetcher } from 'react-router'
 import { isEmpty } from 'lodash-es'
 
 interface MessageInputProps {
-  onSendMessage: (message: string) => void
   disabled?: boolean
 }
 
-const MessageInput = ({ onSendMessage, disabled = false }: MessageInputProps) => {
+const MessageInput = ({ disabled = false }: MessageInputProps) => {
   const fetcher = useFetcher()
   const [newMessage, setNewMessage] = useState('')
 
@@ -17,7 +16,6 @@ const MessageInput = ({ onSendMessage, disabled = false }: MessageInputProps) =>
     e.preventDefault()
     const trimmedMessage = newMessage.trim()
     if (isEmpty(trimmedMessage) || disabled) return
-    onSendMessage(newMessage.trim())
     setNewMessage('')
     fetcher.submit({ message: trimmedMessage }, { method: 'POST' })
   }
@@ -30,7 +28,7 @@ const MessageInput = ({ onSendMessage, disabled = false }: MessageInputProps) =>
   }
 
   return (
-    <div className="bg-white border-t border-gray-200 px-4 sm:px-6 py-4">
+    <div className="bottom-0 w-full bg-white border-t border-gray-200 px-4 sm:px-6 py-4">
       <fetcher.Form onSubmit={handleSubmit} className="flex gap-3 items-center">
         <Textarea
           value={newMessage}

@@ -1,9 +1,7 @@
 import { isEmpty } from 'lodash-es'
-import { useState } from 'react'
 import { redirect } from 'react-router'
 import MessageInput from '~/components/chat/MessageInput'
 import MessageList from '~/components/chat/MessageList'
-import { Message } from '~/components/chat/types'
 import UserPanel from '~/components/chat/UserPanel'
 import { getAuthCookie } from '~/cookie.server'
 import { Route } from './+types'
@@ -23,7 +21,7 @@ export async function loader ({ request }: Route.LoaderArgs) {
     isOwn: message.userId === userId
   }))
 
-  return { initialMessages }
+  return { initialMessages, userId }
 }
 
 export async function action ({ request }: Route.ActionArgs) {
@@ -45,19 +43,6 @@ const fakeUsers = [
 
 const ChatPage = ({ loaderData }: Route.ComponentProps) => {
   const { initialMessages, userId } = loaderData ?? {}
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
-
-  const handleSendMessage = (messageContent: string) => {
-    const message: Message = {
-      id: messages[messages.length - 1].id + 1,
-      content: messageContent,
-      username: 'You',
-      createdAt: new Date().toString(),
-      isOwn: true,
-      userId
-    }
-    setMessages(prev => [...prev, message])
-  }
 
   return (
     <div className="flex w-full bg-gray-50">
@@ -78,8 +63,8 @@ const ChatPage = ({ loaderData }: Route.ComponentProps) => {
             </div>
           </div>
         </div>
-        <MessageList messages={messages} />
-        <MessageInput onSendMessage={handleSendMessage} />
+        <MessageList initialMessages={initialMessages} userId={userId} />
+        <MessageInput />
       </div>
       <UserPanel users={fakeUsers} />
     </div>

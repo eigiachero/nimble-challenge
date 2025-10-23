@@ -2,16 +2,31 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { initializeExpressResolvers } from './initialization.js'
-import { ALLOWED_CORS_ORIGINS_REGEX } from './constants.js'
+import { CORS_ORIGINS } from './constants.js'
 import { logRequest } from './middleware/logRequest.js'
+import { Server } from 'socket.io'
+import { createServer } from 'http'
+
+export let io: Server
 
 (async () => {
   const app = express()
+  const server = createServer(app)
+
   const PORT = process.env.PORT || 3001
+
+  // Configure Socket.IO with CORS
+  io = new Server(server, {
+    cors: {
+      origin: CORS_ORIGINS,
+      methods: ['GET', 'POST'],
+      credentials: true
+    }
+  })
 
   // Middleware
   app.use(cors({
-    origin: ALLOWED_CORS_ORIGINS_REGEX,
+    origin: CORS_ORIGINS,
     credentials: true
   }))
   app.use(express.json())
@@ -19,7 +34,14 @@ import { logRequest } from './middleware/logRequest.js'
 
   await initializeExpressResolvers(app)
 
-  app.listen(PORT, () => {
+  io.on('connection', (socket) => {
+    console.log('a user connected')
+    socket.on('disconnect', () => {
+      console.log('user disconnected')
+    })
+  })
+
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
   })
 })()
