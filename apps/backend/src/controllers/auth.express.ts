@@ -43,11 +43,11 @@ export default async function configureUserExpressRoutes (app: Application): Pro
   })
 
   // @ts-expect-error req extends not working correctly
-  app.get('/user/whoami', verifyToken, (req: Request & { userId: number, userType: string }, res) => {
-    const { userId, userType } = req
-    console.log('User logged: ', userId, userType)
+  app.get('/user/whoami', verifyToken, (req: Request & { userId: number }, res) => {
+    const { userId } = req
+    console.log('User logged: ', userId)
 
-    return res.status(200).json({ status: 'OK', userId, userType })
+    return res.status(200).json({ status: 'OK', userId })
   })
 }
 

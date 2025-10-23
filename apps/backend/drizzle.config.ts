@@ -12,7 +12,7 @@ const {
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: './src/**/*.model.ts',
+  schema: './**/*.model.js',
   out: './src/service_providers/drizzle/migrations',
   dbCredentials: {
     host: BACKEND_DB_HOST!,

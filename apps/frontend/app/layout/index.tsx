@@ -1,5 +1,4 @@
 import { Outlet } from 'react-router'
-import Footer from '~/components/footer'
 import Navbar from '~/components/navbar/navbar'
 import { getAuthCookie } from '~/cookie.server'
 
@@ -14,10 +13,9 @@ export default function Layout () {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex flex-grow h-full w-full">
+      <main className="flex bg-linear-to-br from-blue-50 to-indigo-100 grow h-full w-full">
         <Outlet />
       </main>
-      <Footer />
     </div>
   )
 }

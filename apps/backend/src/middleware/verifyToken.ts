@@ -11,11 +11,9 @@ export function verifyToken (req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const payload = jwt.verify(accessToken, JWT_SECRET_KEY) as { userId: number, userType: string }
+    const payload = jwt.verify(accessToken, JWT_SECRET_KEY) as { userId: number }
     // @ts-expect-error user field does not exist in request
     req.userId = payload.userId
-    // @ts-expect-error user field does not exist in request
-    req.userType = payload.type
     next()
   } catch (_error) {
     return res.status(401).json({ status: 'ERROR', message: 'Unauthorized' })
