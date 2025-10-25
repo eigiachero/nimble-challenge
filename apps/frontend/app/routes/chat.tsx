@@ -29,8 +29,6 @@ export async function action ({ request }: Route.ActionArgs) {
   const form = await request.formData()
   const message = form.get('message') as string
 
-  console.log('message', message)
-
   return await messageService.sendMessage(message, cookie)
 }
 
