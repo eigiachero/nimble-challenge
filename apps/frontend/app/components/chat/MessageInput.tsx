@@ -37,8 +37,10 @@ const MessageInput = ({ disabled = false }: MessageInputProps) => {
           className="flex-1 min-h-[40px] max-h-32 resize-none"
           onKeyDown={handleKeyDown}
           disabled={disabled}
+          id="message-input"
         />
         <Button
+          id="send-message-button"
           type="submit"
           disabled={!newMessage.trim() || disabled}
           className="shrink-0"

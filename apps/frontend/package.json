@@ -9,8 +9,8 @@
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix",
     "typecheck": "react-router typegen && tsc",
-    "wdio": "wdio run ./wdio.conf.ts",
-    "wdio:report": "allure serve allure-results -h localhost -p 9000"
+    "test": "wdio run ./wdio.conf.ts",
+    "test:report": "allure serve allure-results -h localhost -p 8000"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

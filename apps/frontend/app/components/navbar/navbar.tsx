@@ -13,7 +13,7 @@ const Navbar = () => {
           <div className="flex flex-row items-center gap-4">
             <span className="text-white text-sm">Welcome, {userName}</span>
             <Button variant="outline" size="sm" asChild>
-              <Link to="/logout">Logout</Link>
+              <Link to="/logout">Log out</Link>
             </Button>
           </div>
         ) : (

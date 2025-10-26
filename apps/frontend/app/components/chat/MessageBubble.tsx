@@ -22,11 +22,11 @@ const MessageBubble = ({ content, username, timestamp, isOwn }: MessageBubblePro
         }`}
       >
         {!isOwn && (
-          <div className="text-xs font-medium text-gray-500 mb-1">
+          <p className="text-xs font-medium text-gray-500 mb-1" data-testid="message-username">
             {username}
-          </div>
+          </p>
         )}
-        <div className="text-sm">{content}</div>
+        <span className="text-sm whitespace-pre-wrap" data-testid="message-content">{content}</span>
         <div
           className={`text-xs mt-1 ${
             isOwn ? 'text-blue-100' : 'text-gray-500'

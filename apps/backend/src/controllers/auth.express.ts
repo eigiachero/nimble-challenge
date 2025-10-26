@@ -17,7 +17,7 @@ export default async function configureUserExpressRoutes (app: Application): Pro
     }
 
     const user = await userRepository.findOne({ username })
-    if (isNil(user)) { return res.status(404).json({ status: 'ERROR', message: 'User not found' }) }
+    if (isNil(user)) { return res.status(400).json({ status: 'ERROR', message: 'Incorrect username or password' }) }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password)
     if (!isPasswordCorrect) { return res.status(400).json({ status: 'ERROR', message: 'Incorrect username or password' }) }

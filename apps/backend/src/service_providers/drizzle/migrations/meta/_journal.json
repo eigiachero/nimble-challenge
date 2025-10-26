@@ -15,6 +15,13 @@
       "when": 1761249763598,
       "tag": "20251023200243_easy_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1761436168811,
+      "tag": "20251025234928_seed_test_data",
+      "breakpoints": true
     }
   ]
 }
