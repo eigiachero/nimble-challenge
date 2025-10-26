@@ -1,135 +1,209 @@
-# Turborepo starter
+# AQA Challenge - Full Stack Chat Application
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern full-stack chat application built with React Router, Express, PostgreSQL, and Socket.IO. This monorepo features real-time messaging, user authentication, and end-to-end testing capabilities.
 
-## Using this example
+## Features
 
-Run the following command:
+- User authentication (register/login)
+- Real-time chat with Socket.IO
+- Modern UI with TailwindCSS and Shadcn
+- End-to-end testing with WebdriverIO and Cucumber
+- Docker support for PostgreSQL
 
-```sh
-npx create-turbo@latest
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** >= 20.19.0
+- **Yarn** >= 4.8.0 (installed globally)
+- **Docker** and **Docker Compose** (for running the database)
+- **Git**
+
+### Checking Versions
+
+```bash
+node --version  # Should be >= 20.19.0
+yarn --version  # Should be >= 4.8.0
+docker --version
 ```
 
-## What's inside?
+## Technology Stack
 
-This Turborepo includes the following packages/apps:
+### Backend
+- **Framework**: Express.js
+- **Database**: PostgreSQL with Drizzle ORM
+- **Authentication**: JWT (JSON Web Tokens)
+- **Real-time**: Socket.IO
+- **Validation**: Zod
+- **Language**: TypeScript
 
-### Apps and Packages
+### Frontend
+- **Framework**: React 19 with React Router v7
+- **Styling**: TailwindCSS 4
+- **UI Components**: Shadcn/ui
+- **Forms**: React router forms with Zod validation
+- **Language**: TypeScript
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### DevOps & Tools
+- **Monorepo**: Turborepo
+- **Package Manager**: Yarn workspaces
+- **Testing**: WebdriverIO, Cucumber, Allure
+- **Containerization**: Docker
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Project Structure
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+aqa_challenge/
+├── apps/
+│   ├── backend/          # Express API server
+│   │   ├── src/
+│   │   │   ├── controllers/
+│   │   │   ├── models/
+│   │   │   ├── repositories/
+│   │   │   ├── middleware/
+│   │   │   └── service_providers/
+│   │   └── package.json
+│   └── frontend/         # React Router application
+│       ├── app/
+│       │   ├── components/
+│       │   ├── routes/
+│       │   └── api/
+│       └── package.json
+├── packages/
+│   ├── eslint-config/   # Shared ESLint configuration
+│   └── typescript-config/ # Shared TypeScript configuration
+├── docker-config/        # Docker configuration files for Postgres DB
+├── package.json         # Root package.json
+└── turbo.json           # Turborepo configuration
 ```
 
-### Develop
+## Installation
 
-To develop all apps and packages, run the following command:
+### Step 1: Clone the Repository
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+git clone <repository-url>
+cd aqa_challenge
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### Step 2: Install Dependencies
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+Install all dependencies for the monorepo:
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```bash
+yarn install
 ```
 
-### Remote Caching
+This will install dependencies for all workspaces (backend, frontend, and shared packages).
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Step 3: Environment Setup
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+#### Backend Environment Variables
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+The backend already have default values, but if you wish you can create a `.env` file in the `apps/backend/` directory
+The default configuration is:
 
-```
-cd my-turborepo
+```env
+ENVIRONMENT=development
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+DB_HOST=localhost
+DB_NAME=backend
+DB_USER=backend
+DB_PASSWORD=backend
+BACKEND_DB_HOST=localhost
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+JWT_SECRET_KEY=AQA_CHALLENGE_AUTH_KEY_Ur5HaRJ06ayFvx0
 ```
 
-## Useful Links
+#### Frontend Environment
 
-Learn more about the power of Turborepo:
+The frontend will automatically connect to the backend on `http://localhost:3001` (the default backend port).
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### Step 4: Database Setup
+
+#### Option A: Using Docker (Recommended)
+
+1. Start the PostgreSQL database:
+
+```bash
+cd docker-config
+docker-compose up
+```
+
+2. Wait for the database to be ready (a few seconds).
+
+3. Run database migrations:
+
+```bash
+cd ../../apps/backend
+yarn migrate:up
+```
+
+#### Option B: Using Local PostgreSQL
+
+If you prefer to use a local PostgreSQL installation:
+
+1. Create a database:
+
+```sql
+CREATE DATABASE backend;
+CREATE USER backend WITH PASSWORD 'backend';
+GRANT ALL PRIVILEGES ON DATABASE backend TO backend;
+```
+
+2. Update your `.env` file with your database credentials.
+
+3. Run migrations:
+
+```bash
+cd apps/backend
+yarn migrate:up
+```
+
+## Running the Application
+
+To run both backend and frontend in development mode with hot reload:
+
+```bash
+# From the root directory
+yarn dev
+```
+
+This will start:
+- **Backend**: `http://localhost:3001`
+- **Frontend**: `http://localhost:5173`
+
+You can also run them separately:
+
+```bash
+# Terminal 1 - Backend
+cd apps/backend
+yarn dev
+
+# Terminal 2 - Frontend
+cd apps/frontend
+yarn dev
+```
+
+## Testing
+
+### Running E2E Tests
+
+From the frontend directory:
+
+```bash
+cd apps/frontend
+yarn test
+```
+
+### Viewing Test Reports
+
+After running tests, view the Allure report:
+
+```bash
+cd apps/frontend
+yarn test:report
+```
+
+This will open the test report at `http://localhost:8000`.
+
