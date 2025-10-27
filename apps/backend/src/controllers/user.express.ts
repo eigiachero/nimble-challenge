@@ -74,7 +74,7 @@ export default async function configureUserExpressRoutes (app: Application): Pro
     if (isNil(id)) { return res.status(400).json({ status: 'ERROR', message: 'ID is required' }) }
 
     const result = await userRepository.delete(Number(id))
-    if (isNil(result)) { return res.status(500).json({ status: 'ERROR', message: 'Error while deleting user' }) }
+    if (!result) { return res.status(500).json({ status: 'ERROR', message: 'Error while deleting user' }) }
 
     return res.status(200).json({ status: 'OK' })
   })

@@ -4,7 +4,7 @@ import cors from 'cors'
 import { initializeExpressResolvers } from './initialization.js'
 import { ALLOWED_CORS_ORIGINS_REGEX, SOCKET_CORS_ORIGINS } from './constants.js'
 import { logRequest } from './middleware/logRequest.js'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import { createServer } from 'http'
 
 const PORT = Number(process.env.PORT) || 3001
@@ -19,7 +19,7 @@ export const socketIo = new Server(server, {
   }
 })
 
-(async () => {
+const startServer = async () => {
   // Middleware
   app.use(cors({
     origin: ALLOWED_CORS_ORIGINS_REGEX,
@@ -30,11 +30,13 @@ export const socketIo = new Server(server, {
 
   await initializeExpressResolvers(app)
 
-  socketIo.on('connection', (socket) => {
+  socketIo.on('connection', (socket: Socket) => {
     socket.on('disconnect', () => {})
   })
 
   server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
   })
-})()
+}
+
+startServer()
