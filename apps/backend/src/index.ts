@@ -7,7 +7,7 @@ import { logRequest } from './middleware/logRequest.js'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 
-const PORT = process.env.PORT || 3001
+const PORT = Number(process.env.PORT) || 3001
 
 export const app = express()
 export const server = createServer(app)
@@ -17,7 +17,7 @@ export const socketIo = new Server(server, {
     methods: ['GET', 'POST'],
     credentials: true
   }
-});
+})
 
 (async () => {
   // Middleware

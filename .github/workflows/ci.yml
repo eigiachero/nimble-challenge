@@ -1,0 +1,164 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: backend
+          POSTGRES_USER: backend
+          POSTGRES_PASSWORD: backend
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
+
+      - name: Setup Yarn
+        uses: yarn-actions/setup-yarn@v2
+        with:
+          yarn-version: '4.8.0'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build backend
+        working-directory: apps/backend
+        env:
+          DB_HOST: localhost
+          BACKEND_DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: backend
+          DB_USER: backend
+          DB_PASSWORD: backend
+          JWT_SECRET_KEY: AQA_CHALLENGE_AUTH_KEY_Ur5HaRJ06ayFvx0
+        run: yarn build
+
+      - name: Run database migrations
+        working-directory: apps/backend
+        env:
+          DB_HOST: localhost
+          BACKEND_DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: backend
+          DB_USER: backend
+          DB_PASSWORD: backend
+          JWT_SECRET_KEY: AQA_CHALLENGE_AUTH_KEY_Ur5HaRJ06ayFvx0
+        run: yarn migrate:up
+
+      - name: Build frontend
+        working-directory: apps/frontend
+        run: yarn build
+
+      - name: Install Chrome and ChromeDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg unzip
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+          # Install ChromeDriver
+          CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+\.\d+\.\d+\.\d+' | head -1 | cut -d'.' -f1)
+          CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_${CHROME_VERSION}")
+          wget -q -O /tmp/chromedriver.zip "https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_VERSION}/linux64/chromedriver-linux64.zip"
+          sudo unzip -o /tmp/chromedriver.zip -d /tmp/
+          sudo mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+
+      - name: Start backend server
+        working-directory: apps/backend
+        env:
+          DB_HOST: localhost
+          BACKEND_DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: backend
+          DB_USER: backend
+          DB_PASSWORD: backend
+          JWT_SECRET_KEY: AQA_CHALLENGE_AUTH_KEY_Ur5HaRJ06ayFvx0
+          NODE_ENV: development
+          PORT: 3001
+        run: yarn start &
+        continue-on-error: true
+
+      - name: Wait for backend to be ready
+        run: |
+          timeout=60
+          elapsed=0
+          while ! curl -f http://localhost:3001/health 2>/dev/null; do
+            if [ $elapsed -ge $timeout ]; then
+              echo "Backend failed to start within ${timeout}s"
+              exit 1
+            fi
+            echo "Waiting for backend... ($elapsed/${timeout}s)"
+            sleep 2
+            elapsed=$((elapsed + 2))
+          done
+          echo "Backend is ready!"
+
+      - name: Start frontend dev server
+        working-directory: apps/frontend
+        env:
+          CI: true
+        run: |
+          yarn dev > /dev/null 2>&1 &
+        continue-on-error: true
+
+      - name: Wait for frontend to be ready
+        run: |
+          timeout=120
+          elapsed=0
+          while ! curl -f http://localhost:5173 2>/dev/null; do
+            if [ $elapsed -ge $timeout ]; then
+              echo "Frontend failed to start within ${timeout}s"
+              exit 1
+            fi
+            echo "Waiting for frontend... ($elapsed/${timeout}s)"
+            sleep 2
+            elapsed=$((elapsed + 2))
+          done
+          echo "Frontend is ready!"
+
+      - name: Run E2E tests
+        working-directory: apps/frontend
+        env:
+          CI: true
+        run: yarn test
+
+      - name: Upload Allure test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: apps/frontend/allure-results/
+          if-no-files-found: ignore
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: apps/frontend/
+          if-no-files-found: ignore
+
