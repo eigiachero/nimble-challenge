@@ -34,10 +34,11 @@ jobs:
         with:
           node-version: '20.19.0'
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Setup Yarn
-        uses: yarn-actions/setup-yarn@v2
-        with:
-          yarn-version: '4.8.0'
+        run: corepack prepare yarn@4.8.0 --activate
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -56,14 +57,6 @@ jobs:
 
       - name: Run database migrations
         working-directory: apps/backend
-        env:
-          DB_HOST: localhost
-          BACKEND_DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: backend
-          DB_USER: backend
-          DB_PASSWORD: backend
-          JWT_SECRET_KEY: AQA_CHALLENGE_AUTH_KEY_Ur5HaRJ06ayFvx0
         run: yarn migrate:up
 
       - name: Build frontend
