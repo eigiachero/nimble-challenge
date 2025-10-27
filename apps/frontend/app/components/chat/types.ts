@@ -7,8 +7,8 @@ export interface Message {
   isOwn: boolean
 }
 
-export interface User {
-  id: string
+export interface PanelUser {
+  id: number
   username: string
   isOnline: boolean
   lastSeen?: Date

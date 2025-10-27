@@ -1,28 +1,27 @@
 import { Avatar } from '../ui/avatar'
 import { Badge } from '../ui/badge'
-import { User } from './types'
+import dayjs from 'dayjs'
+import { PanelUser } from './types'
 
 interface UserPanelProps {
-  users: User[]
+  users: PanelUser[]
+}
+
+const formatLastSeen = (date: Date) => {
+  const diffInMinutes = Math.abs(dayjs().diff(dayjs(date), 'minutes'))
+
+  if (diffInMinutes <= 1) return 'Just now'
+  if (diffInMinutes < 60) return `${diffInMinutes}m ago`
+
+  const hours = Math.floor(diffInMinutes / 60)
+  if (hours < 24) return `${hours}h ago`
+
+  const days = Math.floor(hours / 24)
+
+  return `${days}d ago`
 }
 
 const UserPanel = ({ users }: UserPanelProps) => {
-  const formatLastSeen = (date: Date) => {
-    const now = new Date()
-    const diff = now.getTime() - date.getTime()
-    const minutes = Math.floor(diff / 60000)
-
-    if (minutes < 1) return 'Just now'
-    if (minutes < 60) return `${minutes}m ago`
-
-    const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours}h ago`
-
-    const days = Math.floor(hours / 24)
-
-    return `${days}d ago`
-  }
-
   return (
     <div className="hidden lg:flex w-80 bg-white border-l border-gray-200 flex-col">
       <div className="px-6 py-4 border-b border-gray-200">
@@ -35,9 +34,9 @@ const UserPanel = ({ users }: UserPanelProps) => {
           <div key={user.id} className="flex items-center space-x-3">
             <div className="relative">
               <Avatar className="w-10 h-10">
-                <div className="w-full h-full bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium text-gray-600">
+                <p className="w-full h-full bg-gray-300 rounded-full flex items-center justify-center text-sm font-medium text-gray-600">
                   {user.username.charAt(0).toUpperCase()}
-                </div>
+                </p>
               </Avatar>
               {user.isOnline && (
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>

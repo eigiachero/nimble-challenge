@@ -35,7 +35,7 @@ Then('I send a message with text {string} to the chat', async (message: string) 
 })
 
 Then('I should see the message with text {string} in the chat', async (message: string) => {
-  await browser.pause(200)
+  await browser.pause(300)
   const chatMessage = await chatPage.getLastChatMessage()
   const text = await chatMessage.getText()
   assert.equal(text, message)
