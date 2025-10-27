@@ -42,7 +42,7 @@ const Register = () => {
       <ErrorMessage message={actionData?.errorMessage} />
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-gray-800 text-center">
-          <h1>Register</h1>
+          <h1 id='register-title'>Register</h1>
         </CardTitle>
       </CardHeader>
       <CardContent>

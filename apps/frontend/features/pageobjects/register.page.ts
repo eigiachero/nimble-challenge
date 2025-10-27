@@ -3,7 +3,7 @@ import Page from './page.js'
 
 class RegisterPage extends Page {
   public getPageHeader () {
-    return $('//h1')
+    return $('#register-title')
   }
 
   public open () {

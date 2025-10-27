@@ -14,7 +14,7 @@ const Login = () => {
       <ErrorMessage message={actionData?.errorMessage} />
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-gray-800 text-center">
-          <h1>Login</h1>
+          <h1 id='login-title'>Login</h1>
         </CardTitle>
       </CardHeader>
       <CardContent>

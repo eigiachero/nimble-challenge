@@ -52,15 +52,14 @@ Then('I should see the chat page', async () => {
 
 Then('I should be redirected to the login page', async () => {
   const header = await loginPage.getPageHeader()
-  await header.isDisplayed()
+  await header.waitForDisplayed()
   const headerText = await header.getText()
   assert.equal(headerText, 'Login')
 })
 
 Then('I should be redirected to the register page', async () => {
-  await registerPage.getPageHeader().isDisplayed()
   const header = await registerPage.getPageHeader()
-  await header.isDisplayed()
+  await header.waitForDisplayed()
   const headerText = await header.getText()
   assert.equal(headerText, 'Register')
 })
