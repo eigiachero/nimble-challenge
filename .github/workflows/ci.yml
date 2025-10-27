@@ -52,11 +52,17 @@ jobs:
           DB_NAME: backend
           DB_USER: backend
           DB_PASSWORD: backend
-          JWT_SECRET_KEY: AQA_CHALLENGE_AUTH_KEY_Ur5HaRJ06ayFvx0
         run: yarn build
 
       - name: Run database migrations
         working-directory: apps/backend
+        env:
+          DB_HOST: localhost
+          BACKEND_DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: backend
+          DB_USER: backend
+          DB_PASSWORD: backend
         run: yarn migrate:up
 
       - name: Build frontend
