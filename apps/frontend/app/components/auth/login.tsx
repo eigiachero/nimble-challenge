@@ -13,7 +13,9 @@ const Login = () => {
     <Card className="shadow-xl">
       <ErrorMessage message={actionData?.errorMessage} />
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-gray-800 text-center">Login</CardTitle>
+        <CardTitle className="text-2xl font-bold text-gray-800 text-center">
+          <h1>Login</h1>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form method="POST" className="space-y-4">

@@ -18,6 +18,10 @@ class LoginPage extends Page {
     return $('//div[1]/span')
   }
 
+  public getPageHeader () {
+    return $('//h1')
+  }
+
   public async login (username: string, password: string) {
     await this.inputUsername.setValue(username)
     await this.inputPassword.setValue(password)

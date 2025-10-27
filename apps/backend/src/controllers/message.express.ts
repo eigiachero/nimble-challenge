@@ -4,7 +4,7 @@ import { isNil } from 'lodash-es'
 import { verifyToken } from '~/middleware/verifyToken.js'
 import z from 'zod'
 import { validateBodyData } from '~/middleware/validateBodyData.js'
-import { io } from '~/index.js'
+import { socketIo } from '~/index.js'
 import { userRepository } from '~/repositories/user.js'
 
 export const messageCreateSchema = z.object({
@@ -31,7 +31,7 @@ export default async function configureMessageExpressRoutes (app: Application): 
     if (isNil(created)) { return res.status(500).json({ status: 'ERROR', message: 'Error creating message' }) }
 
     const message = { ...created, username: user.username }
-    io.emit('newMessage', message)
+    socketIo.emit('newMessage', message)
 
     return res.status(201).json({ status: 'OK', message })
   })

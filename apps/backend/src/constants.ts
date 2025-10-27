@@ -10,9 +10,7 @@ export const {
 } = process.env
 
 // CORS origins for development
-export const CORS_ORIGINS = [
-  'http://localhost:3000',
-  'http://localhost:5173', // Vite default port
-  'http://127.0.0.1:3000',
+export const SOCKET_CORS_ORIGINS = [
+  'http://localhost:5173',
   'http://127.0.0.1:5173'
 ]
