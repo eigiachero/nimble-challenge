@@ -61,8 +61,10 @@ export default class DrizzleUserRepository {
     return updatedUsers[0]
   }
 
-  async delete (id: number): Promise<void> {
+  async delete (id: number): Promise<boolean> {
     await this.update(id, { deletedAt: new Date() })
+
+    return true
   }
 
   #generateUserFilter (filter?: FindUserFilter): SQL[] {

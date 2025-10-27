@@ -49,6 +49,7 @@ docker --version
 - **Package Manager**: Yarn workspaces
 - **Testing**: WebdriverIO, Cucumber, Allure
 - **Containerization**: Docker
+- **CI/CD**: GitHub Actions
 
 ## Project Structure
 
@@ -206,4 +207,28 @@ yarn test:report
 ```
 
 This will open the test report at `http://localhost:8000`.
+
+## CI/CD Pipeline
+
+This project includes a GitHub Actions CI pipeline that automatically runs E2E tests on every push and pull request.
+
+### What the CI Does
+
+1. Sets up Node.js, Yarn, and PostgreSQL
+2. Installs all dependencies
+3. Builds the backend and frontend
+4. Runs database migrations
+5. Starts the backend and frontend servers
+6. Executes E2E tests with WebDriverIO
+7. Uploads test results and reports as artifacts
+
+### Running Tests in CI
+
+Tests run automatically on:
+- Push to `master`, `main`, or `develop` branches
+- Pull requests targeting those branches
+
+Test results and Allure reports are available as downloadable artifacts after each CI run.
+
+For more details, see [`.github/workflows/README.md`](.github/workflows/README.md).
 
