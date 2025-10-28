@@ -1,0 +1,40 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: bash
+  args: [
+    '-c',
+    "
+      cd apps/frontend && \
+      echo \"VITE_BACKEND_BASE_URL=$_VITE_BACKEND_BASE_URL\" > .env && \
+      cd ../.. && \
+      docker build \
+        --file infrastructure/containers/Dockerfile.frontend.cloud \
+        --cache-from gcr.io/$PROJECT_ID/nimble-challenge:latest \
+        --tag gcr.io/$PROJECT_ID/nimble-challenge:$COMMIT_SHA \
+        --tag gcr.io/$PROJECT_ID/nimble-challenge:latest \
+        . && \
+      docker push --all-tags gcr.io/$PROJECT_ID/nimble-challenge \
+    "
+  ]
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+  env:
+    - 'GCS_CACHE_BUCKET=$_GCS_CACHE_BUCKET'
+  entrypoint: sh
+  args: [
+    '-c',
+    "\
+      gcloud run deploy nimble-challenge \
+        --image gcr.io/$PROJECT_ID/nimble-challenge:$COMMIT_SHA \
+        --region us-central1 \
+        --platform managed \
+        --allow-unauthenticated \
+        --set-env-vars \"VITE_BACKEND_BASE_URL=$_VITE_BACKEND_BASE_URL\" \
+    "
+  ]
+
+logsBucket: '$_LOGS_BUCKET'
+timeout: 2400s
+options:
+  logging: GCS_ONLY
+  machineType: 'UNSPECIFIED'

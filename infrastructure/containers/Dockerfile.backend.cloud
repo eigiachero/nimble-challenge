@@ -1,0 +1,21 @@
+FROM node:20.19-alpine
+RUN apk update
+RUN apk add patch
+RUN corepack enable
+
+ENV NODE_ENV=production
+
+
+WORKDIR /app
+COPY ./apps/backend/package.json ./apps/backend/package.json
+COPY ./package.json ./package.json
+COPY ./yarn.lock ./yarn.lock
+COPY ./.yarnrc.yml ./.yarnrc.yml
+COPY ./packages ./packages
+RUN yarn install && yarn cache clean --all
+
+COPY ./apps/backend .
+RUN yarn run build
+
+EXPOSE 3001
+CMD [ "yarn", "start" ]
