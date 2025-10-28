@@ -19,7 +19,7 @@ class LoginPage extends Page {
   }
 
   public getPageHeader () {
-    return $('//h1')
+    return $('#login-title')
   }
 
   public async login (username: string, password: string) {
