@@ -6521,7 +6521,7 @@ __metadata:
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     react-hook-form: "npm:^7.65.0"
-    react-router: "npm:^7.7.1"
+    react-router: "npm:7.7.1"
     react-toastify: "npm:11.0.4"
     socket.io-client: "npm:^4.8.1"
     tailwind-merge: "npm:^3.3.1"
@@ -9829,9 +9829,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:^7.7.1":
-  version: 7.9.4
-  resolution: "react-router@npm:7.9.4"
+"react-router@npm:7.7.1":
+  version: 7.7.1
+  resolution: "react-router@npm:7.7.1"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -9841,7 +9841,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/c7556b752fa88d2bff600ce3533c962dcbe9ca9bf71f9c4b8e8a21f904856990bcb284844d53eb1dd486adaa7567c7ecf0deb3e518262269ea1ea89bea246be4
+  checksum: 10c0/e55fe74a2947939526c79e496ab1fc501fd8e89a191a20157d94cfe712d4d9d84f68627811cf1d477a36b98250fcad958bf1237fc41ff0a8b2de00ddc8c53e3b
   languageName: node
   linkType: hard
 
