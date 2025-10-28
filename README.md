@@ -2,6 +2,13 @@
 
 A modern full-stack chat application built with React Router, Express, PostgreSQL, and Socket.IO. This monorepo features real-time messaging, user authentication, and end-to-end testing capabilities.
 
+## Live Demo
+
+The application is deployed on Google Cloud and you can try it here:
+
+- **Frontend:** [https://nimble-challenge-87797879963.us-central1.run.app](https://nimble-challenge-87797879963.us-central1.run.app)
+- **Backend:** [https://nimble-challenge-backend-87797879963.us-central1.run.app](https://nimble-challenge-backend-87797879963.us-central1.run.app)
+
 ## Features
 
 - User authentication (register/login)
