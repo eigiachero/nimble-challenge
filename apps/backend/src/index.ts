@@ -15,7 +15,7 @@ export const socketIo = new Server(server, {
   cors: {
     origin: SOCKET_CORS_ORIGINS,
     methods: ['GET', 'POST'],
-    credentials: true
+    credentials: false
   }
 })
 
@@ -31,7 +31,10 @@ const startServer = async () => {
   await initializeExpressResolvers(app)
 
   socketIo.on('connection', (socket: Socket) => {
-    socket.on('disconnect', () => {})
+    console.log('Socket connected', socket.id)
+    socket.on('disconnect', () => {
+      console.log('Socket disconnected', socket.id)
+    })
   })
 
   server.listen(PORT, () => {
