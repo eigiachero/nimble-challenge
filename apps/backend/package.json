@@ -10,6 +10,8 @@
     "start": "cd dist && NODE_ENV=production node index.js",
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "migrate:generate": "drizzle-kit generate",
     "migrate:up": "drizzle-kit migrate",
     "clean": "rm -rf dist"
@@ -40,11 +42,15 @@
     "@types/jsonwebtoken": "^9",
     "@types/node": "^20.10.5",
     "@types/pg": "^8",
+    "@types/supertest": "^6.0.3",
+    "@vitest/coverage-v8": "4.0.4",
     "drizzle-kit": "^0.31.4",
+    "supertest": "^7.1.4",
     "ts-node-dev": "^2.0.0",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.20.3",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.4"
   },
   "peerDependencies": {
     "@stylistic/eslint-plugin": "*",

@@ -69,7 +69,7 @@ export default async function configureUserExpressRoutes (app: Application): Pro
     return res.status(200).json({ status: 'OK' })
   })
 
-  app.delete('/users/:id', async (req, res) => {
+  app.delete('/users/:id', verifyToken, async (req, res) => {
     const { id } = req.params
     if (isNil(id)) { return res.status(400).json({ status: 'ERROR', message: 'ID is required' }) }
 
